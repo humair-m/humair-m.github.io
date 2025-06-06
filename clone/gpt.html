@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ChatGPT - Clone</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        
+        * {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            -webkit-font-smoothing: antialiased;
+        }
+        
+        .chat-container {
+            scrollbar-width: thin;
+            scrollbar-color: #888 transparent;
+        }
+        
+        .chat-container::-webkit-scrollbar {
+            width: 6px;
+        }
+        
+        .chat-container::-webkit-scrollbar-thumb {
+            background-color: #888;
+            border-radius: 3px;
+        }
+        
+        .message-container:last-child {
+            margin-bottom: 20px;
+        }
+        
+        .user-message-gradient {
+            background: linear-gradient(135deg, #343541 0%, #3e3f4b 100%);
+        }
+        
+        .ai-message-gradient {
+            background: linear-gradient(135deg, #444654 0%, #40414f 100%);
+        }
+        
+        .sidebar-item:hover {
+            background: #2c2c38;
+        }
+        
+        .typing-indicator {
+            display: flex;
+            padding: 10px 0;
+        }
+        
+        .typing-dot {
+            width: 8px;
+            height: 8px;
+            background-color: #ececf1;
+            border-radius: 50%;
+            margin: 0 2px;
+            animation: typing-animation 1.5s infinite;
+        }
+        
+        .typing-dot:nth-child(2) {
+            animation-delay: 0.3s;
+        }
+        
+        .typing-dot:nth-child(3) {
+            animation-delay: 0.6s;
+        }
+        
+        @keyframes typing-animation {
+            0% { transform: translateY(0px); }
+            20% { transform: translateY(-5px); }
+            40% { transform: translateY(0px); }
+        }
+        
+        @media (max-width: 768px) {
+            .sidebar {
+                transform: translateX(-100%);
+                transition: transform 0.3s ease;
+                z-index: 20;
+            }
+            
+            .sidebar.open {
+                transform: translateX(0);
+            }
+            
+            .overlay {
+                display: none;
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: rgba(0,0,0,0.5);
+                z-index: 10;
+            }
+            
+            .sidebar.open + .overlay {
+                display: block;
+            }
+        }
+    </style>
+</head>
+<body class="bg-gray-900 text-white h-screen flex overflow-hidden">
+    <!-- Sidebar Navigation -->
+    <aside class="sidebar w-64 bg-gray-900 border-r border-gray-700 flex flex-col absolute md:relative h-full">
+        <!-- Logo and New Chat -->
+        <div class="p-4 border-b border-gray-700">
+            <button class="flex items-center gap-3 p-3 rounded-md border border-gray-600 w-full hover:bg-gray-800 transition">
+                <i class="fas fa-plus"></i>
+                <span>New chat</span>
+            </button>
+        </div>
+        
+        <!-- Recent Chats -->
+        <div class="flex-1 overflow-y-auto p-2">
+            <div class="text-gray-400 text-xs px-4 py-2">Today</div>
+            <div class="sidebar-item flex items-center gap-3 px-4 py-3 rounded-md hover:bg-gray-800 transition cursor-pointer">
+                <i class="fas fa-comment"></i>
+                <span class="truncate">Explain quantum computing</span>
+            </div>
+            <div class="sidebar-item flex items-center gap-3 px-4 py-3 rounded-md hover:bg-gray-800 transition cursor-pointer">
+                <i class="fas fa-comment"></i>
+                <span class="truncate">Python vs JavaScript for web dev</span>
+            </div>
+            
+            <div class="text-gray-400 text-xs px-4 py-2">Yesterday</div>
+            <div class="sidebar-item flex items-center gap-3 px-4 py-3 rounded-md hover:bg-gray-800 transition cursor-pointer">
+                <i class="fas fa-comment"></i>
+                <span class="truncate">Create a workout routine</span>
+            </div>
+            <div class="sidebar-item flex items-center gap-3 px-4 py-3 rounded-md hover:bg-gray-800 transition cursor-pointer">
+                <i class="fas fa-comment"></i>
+                <span class="truncate">What is Tailwind CSS?</span>
+            </div>
+        </div>
+        
+        <!-- User Section -->
+        <div class="p-3 border-t border-gray-700">
+            <button class="flex items-center gap-3 p-3 rounded-md hover:bg-gray-800 transition w-full">
+                <div class="bg-purple-600 rounded-full w-8 h-8 flex items-center justify-center">
+                    <i class="fas fa-user"></i>
+                </div>
+                <span>John Doe</span>
+            </button>
+        </div>
+    </aside>
+    
+    <div class="overlay" onclick="toggleSidebar()"></div>
+    
+    <!-- Main Content Area -->
+    <main class="flex-1 flex flex-col h-full bg-gradient-to-b from-gray-800 to-gray-900">
+        <!-- Mobile Top Bar -->
+        <div class="md:hidden flex items-center justify-between p-4 border-b border-gray-700">
+            <button class="text-xl" onclick="toggleSidebar()">
+                <i class="fas fa-bars"></i>
+            </button>
+            <h1 class="text-xl font-bold">ChatGPT</h1>
+            <button>
+                <i class="fas fa-edit"></i>
+            </button>
+        </div>
+        
+        <!-- Chat Header -->
+        <div class="p-4 hidden md:block text-center">
+            <h1 class="text-3xl font-bold bg-gradient-to-r from-green-400 to-blue-500 bg-clip-text text-transparent">ChatGPT</h1>
+            <p class="text-gray-400 mt-1">AI language model developed by OpenAI</p>
+        </div>
+        
+        <!-- Chat Container -->
+        <div class="chat-container flex-1 overflow-y-auto px-4 py-8 md:p-8">
+            <div class="max-w-3xl mx-auto">
+                <!-- Welcome Message -->
+                <div class="message-container flex justify-center mb-8">
+                    <div class="bg-gray-800 rounded-2xl p-6 max-w-2xl text-center">
+                        <div class="text-2xl mb-4">👋 Hello! How can I help you today?</div>
+                        <p class="text-gray-400">Ask anything about coding, science, writing, and more.</p>
+                        
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-6">
+                            <div class="bg-gray-700 rounded-xl p-4 text-left">
+                                <div class="text-green-400 font-semibold">Examples</div>
+                                <ul class="text-left mt-2 space-y-2">
+                                    <li class="text-gray-300 hover:text-white cursor-pointer">"Explain quantum computing in simple terms"</li>
+                                    <li class="text-gray-300 hover:text-white cursor-pointer">"Write a Python script to fetch weather data"</li>
+                                    <li class="text-gray-300 hover:text-white cursor-pointer">"How do I make an HTTP request in JavaScript?"</li>
+                                </ul>
+                            </div>
+                            
+                            <div class="bg-gray-700 rounded-xl p-4 text-left">
+                                <div class="text-green-400 font-semibold">Capabilities</div>
+                                <ul class="text-left mt-2 space-y-2">
+                                    <li class="text-gray-300">Remembering what user said earlier in conversation</li>
+                                    <li class="text-gray-300">Allowing user to provide follow-up corrections</li>
+                                    <li class="text-gray-300">Trained to decline inappropriate requests</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Messages -->
+                <div class="message-container">
+                    <div class="user-message-gradient rounded-xl p-4 mb-4">
+                        <div class="flex gap-3">
+                            <div class="bg-purple-600 rounded-full w-8 h-8 flex items-center justify-center flex-shrink-0">
+                                <i class="fas fa-user"></i>
+                            </div>
+                            <div>
+                                <div class="font-semibold">You</div>
+                                <div class="mt-2">Can you explain what Tailwind CSS is and why it's popular?</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="ai-message-gradient rounded-xl p-4 mb-4">
+                        <div class="flex gap-3">
+                            <div class="bg-gradient-to-br from-green-600 to-blue-500 rounded-full w-8 h-8 flex items-center justify-center flex-shrink-0">
+                                <i class="fas fa-robot"></i>
+                            </div>
+                            <div>
+                                <div class="font-semibold">ChatGPT</div>
+                                <div class="mt-2">
+                                    <p class="mb-3">Tailwind CSS is a utility-first CSS framework that provides low-level utility classes to build custom designs without writing custom CSS.</p>
+                                    
+                                    <p class="mb-3">Here are some reasons why Tailwind CSS has become popular:</p>
+                                    
+                                    <ol class="list-decimal list-inside space-y-1 ml-4">
+                                        <li><strong>Rapid development:</strong> By using utility classes directly in HTML, developers can style elements quickly without context switching.</li>
+                                        <li><strong>Responsive design:</strong> Built-in responsive prefixes make creating responsive layouts straightforward.</li>
+                                        <li><strong>Customizability:</strong> Tailwind is highly configurable through its configuration file.</li>
+                                        <li><strong>Consistency:</strong> Utility classes enforce consistent styling across the project.</li>
+                                        <li><strong>Developer experience:</strong> Features like Just-in-Time (JIT) mode provide excellent DX with fast builds and hot reloading.</li>
+                                    </ol>
+                                    
+                                    <p class="mt-3">Compared to other frameworks like Bootstrap, Tailwind doesn't impose design decisions, allowing for truly custom UIs while maintaining development speed.</p>
+                                </div>
+                                <div class="flex gap-3 mt-4 text-gray-400">
+                                    <button class="hover:text-white"><i class="fas fa-thumbs-up"></i></button>
+                                    <button class="hover:text-white"><i class="fas fa-thumbs-down"></i></button>
+                                    <button class="hover:text-white"><i class="fas fa-copy"></i></button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="typing-indicator mb-4">
+                        <div class="flex gap-3">
+                            <div class="bg-gradient-to-br from-green-600 to-blue-500 rounded-full w-8 h-8 flex items-center justify-center flex-shrink-0">
+                                <i class="fas fa-robot"></i>
+                            </div>
+                            <div class="flex items-center ml-2">
+                                <div class="typing-dot"></div>
+                                <div class="typing-dot"></div>
+                                <div class="typing-dot"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Input Area -->
+        <div class="p-4 pb-6 md:pb-8">
+            <div class="max-w-3xl mx-auto">
+                <div class="relative">
+                    <textarea 
+                        id="messageInput" 
+                        rows="1"
+                        placeholder="Message ChatGPT..."
+                        class="w-full bg-gray-700 rounded-xl py-4 pl-4 pr-16 focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none max-h-48"
+                        oninput="resizeTextarea(this)"
+                    ></textarea>
+                    <button 
+                        class="absolute right-3 bottom-3 bg-green-500 hover:bg-green-600 rounded-lg w-8 h-8 flex items-center justify-center transition"
+                        title="Send message"
+                    >
+                        <i class="fas fa-paper-plane text-gray-900"></i>
+                    </button>
+                </div>
+                
+                <p class="text-xs text-gray-500 text-center mt-3">
+                    ChatGPT can make mistakes. Consider checking important information.
+                </p>
+            </div>
+        </div>
+    </main>
+    
+    <script>
+        // Toggle sidebar on mobile
+        function toggleSidebar() {
+            const sidebar = document.querySelector('.sidebar');
+            sidebar.classList.toggle('open');
+            
+            const overlay = document.querySelector('.overlay');
+            if (sidebar.classList.contains('open')) {
+                overlay.style.display = 'block';
+                document.body.style.overflow = 'hidden';
+            } else {
+                overlay.style.display = 'none';
+                document.body.style.overflow = '';
+            }
+        }
+        
+        // Auto-resize textarea
+        function resizeTextarea(element) {
+            element.style.height = 'auto';
+            element.style.height = (element.scrollHeight) + 'px';
+        }
+        
+        // Close sidebar when clicking outside
+        document.addEventListener('click', function(e) {
+            const sidebar = document.querySelector('.sidebar');
+            const overlay = document.querySelector('.overlay');
+            
+            if (!sidebar.contains(e.target) && !e.target.closest('.sidebar-toggle') && sidebar.classList.contains('open')) {
+                toggleSidebar();
+            }
+        });
+        
+        // Sample interaction
+        const messageInput = document.getElementById('messageInput');
+        const sendButton = document.querySelector('.fa-paper-plane').closest('button');
+        
+        sendButton.addEventListener('click', function() {
+            if (messageInput.value.trim() !== '') {
+                // This is where you would handle sending the message
+                // For now, just clear the input
+                messageInput.value = '';
+                resizeTextarea(messageInput);
+                
+                // Scroll to bottom
+                document.querySelector('.chat-container').scrollTop = document.querySelector('.chat-container').scrollHeight;
+            }
+        });
+        
+        // Allow Shift+Enter for new lines, Enter to send
+        messageInput.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter' && !e.shiftKey) {
+                e.preventDefault();
+                sendButton.click();
+            }
+        });
+    </script>
+</body>
+</html>
