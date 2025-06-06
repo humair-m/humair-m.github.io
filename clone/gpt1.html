@@ -1,0 +1,630 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Advanced ChatGPT Clone</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@11.7.0/styles/github-dark-dimmed.min.css">
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/highlight.js@11.7.0/lib/common.min.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        *{font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;-webkit-font-smoothing:antialiased;}
+        body,.bg-gray-900{background-color:#1f2937;color:#fff;}
+        .dark .bg-gray-900{background-color:#0a0a0a;}
+        .h-screen{height:100vh;}
+        .flex{display:flex;}
+        .overflow-hidden{overflow:hidden;}
+        .w-64{width:16rem;}
+        .border-r,.border-b,.border-t{border-width:1px;border-color:#374151;}
+        .flex-col{flex-direction:column;}
+        .absolute{position:absolute;}
+        .md\:relative{position:relative;}
+        .h-full{height:100%;}
+        .p-4{padding:1rem;}
+        .gap-3{gap:0.75rem;}
+        .items-center{align-items:center;}
+        .rounded-md{border-radius:0.375rem;}
+        .border-gray-600{border-color:#4b5563;}
+        .w-full{width:100%;}
+        .hover\:bg-gray-800:hover{background-color:#2d3748;}
+        .transition{transition-property:all;transition-duration:150ms;}
+        .focus\:outline-none:focus{outline:2px solid transparent;outline-offset:2px;}
+        .mt-3{margin-top:0.75rem;}
+        .px-4{padding-left:1rem;padding-right:1rem;}
+        .pb-4{padding-bottom:1rem;}
+        .text-gray-400{color:#9ca3af;}
+        .font-medium{font-weight:500;}
+        .text-sm{font-size:0.875rem;}
+        .justify-between{justify-content:space-between;}
+        .cursor-pointer{cursor:pointer;}
+        .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);border:0;}
+        .relative{position:relative;}
+        .inline-flex{display:inline-flex;}
+        .peer-focus\:outline-none:focus{outline:2px solid transparent;outline-offset:2px;}
+        .rounded-full{border-radius:9999px;}
+        .peer-checked\:after\:translate-x-full:checked::after{transform:translateX(100%);}
+        .peer-checked\:after\:border-white:checked::after{border-color:#fff;}
+        .after\:content-\[\'\'\]::after{content:'';}
+        .after\:absolute::after{position:absolute;}
+        .after\:top-\[2px\]::after{top:2px;}
+        .after\:left-\[2px\]::after{left:2px;}
+        .after\:bg-white::after{background-color:#fff;}
+        .after\:border-gray-300::after{border-color:#d1d5db;}
+        .after\:border::after{border-width:1px;}
+        .after\:rounded-full::after{border-radius:9999px;}
+        .after\:transition-all::after{transition-property:all;transition-duration:150ms;}
+        .peer-checked\:bg-chatgpt-primary:checked{background-color:#10a37f;}
+        .mt-4{margin-top:1rem;}
+        .mb-2{margin-bottom:0.5rem;}
+        .mb-1{margin-bottom:0.25rem;}
+        .bg-rose-700{background-color:#be123c;}
+        .hover\:bg-rose-800:hover{background-color:#9f1239;}
+        .py-2{padding-top:0.5rem;padding-bottom:0.5rem;}
+        .text-white{color:#fff;}
+        .justify-center{justify-content:center;}
+        .gap-2{gap:0.5rem;}
+        .flex-1{flex:1;}
+        .overflow-y-auto{overflow-y:auto;}
+        .p-2{padding:0.5rem;}
+        .text-xs{font-size:0.75rem;}
+        .py-3{padding-top:0.75rem;padding-bottom:0.75rem;}
+        .cursor-pointer{cursor:pointer;}
+        .truncate{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+        .text-green-400{color:#4ade80;}
+        .p-3{padding:0.75rem;}
+        .bg-purple-600{background-color:#9333ea;}
+        .w-8{width:2rem;}
+        .h-8{height:2rem;}
+        .overlay{display:none;}
+        .md\:hidden{display:none;}
+        @media (min-width:768px){.md\:hidden{display:none;}.md\:flex{display:flex;}.md\:relative{position:relative;}}
+        .text-xl{font-size:1.25rem;}
+        .font-bold{font-weight:700;}
+        .bg-gradient-to-b{background-image:linear-gradient(to bottom,var(--tw-gradient-stops));}
+        .from-gray-800{--tw-gradient-from:#2d3748;}
+        .to-gray-900{--tw-gradient-to:#1f2937;}
+        .dark .from-gray-800{--tw-gradient-from:#1a1a1a;}
+        .dark .to-gray-900{--tw-gradient-to:#0a0a0a;}
+        .flex-col{flex-direction:column;}
+        .text-3xl{font-size:1.875rem;}
+        .bg-gradient-to-r{background-image:linear-gradient(to right,var(--tw-gradient-stops));}
+        .from-green-400{--tw-gradient-from:#4ade80;}
+        .to-blue-500{--tw-gradient-to:#3b82f6;}
+        .bg-clip-text{background-clip:text;-webkit-background-clip:text;}
+        .text-transparent{color:transparent;}
+        .mb-4{margin-bottom:1rem;}
+        .hover\:bg-gray-700:hover{background-color:#374151;}
+        .dark\:hidden:not(.dark){display:none;}
+        .dark .dark\:block{display:block;}
+        .text-gray-500{color:#6b7280;}
+        .text-center{text-align:center;}
+        .mt-2{margin-top:0.5rem;}
+        .pr-12{padding-right:3rem;}
+        .focus\:ring-2:focus{--tw-ring-offset-shadow:0 0 #0000;--tw-ring-shadow:0 0 #0000;box-shadow:0 0 #0000,0 0 #0000,0 0 0 2px rgba(59,130,246,.5);}
+        .focus\:ring-blue-500:focus{--tw-ring-color:#3b82f6;}
+        .resize-none{resize:none;}
+        .max-h-48{max-height:12rem;}
+        .bottom-2{bottom:0.5rem;}
+        .bg-green-600{background-color:#059669;}
+        .hover\:bg-green-700:hover{background-color:#047857;}
+        .max-w-2xl{max-width:42rem;}
+        .mx-auto{margin-left:auto;margin-right:auto;}
+        .rounded-2xl{border-radius:1rem;}
+        .p-6{padding:1.5rem;}
+        .text-2xl{font-size:1.5rem;}
+        .grid{display:grid;}
+        .grid-cols-1{grid-template-columns:repeat(1,minmax(0,1fr));}
+        .md\:grid-cols-2{grid-template-columns:repeat(2,minmax(0,1fr));}
+        .gap-4{gap:1rem;}
+        .mt-6{margin-top:1.5rem;}
+        .text-left{text-align:left;}
+        .font-semibold{font-semibold;}
+        .space-y-2 > :not([hidden]) ~ :not([hidden]){margin-top:0.5rem;}
+        .mr-2{margin-right:0.5rem;}
+        .user-message-gradient{background:linear-gradient(135deg,#343541 0%,#3e3f4b 100%);}
+        .dark .user-message-gradient{background:linear-gradient(135deg,#0d0d0d 0%,#1a1a1a 100%);}
+        .ai-message-gradient{background:linear-gradient(135deg,#444654 0%,#40414f 100%);}
+        .dark .ai-message-gradient{background:linear-gradient(135deg,#1a1a1a 0%,#2a2a2a 100%);}
+        .flex-shrink-0{flex-shrink:0;}
+        .bg-gradient-to-br{background-image:linear-gradient(to bottom right,var(--tw-gradient-stops));}
+        .from-green-600{--tw-gradient-from:#059669;}
+        .to-blue-500{--tw-gradient-to:#3b82f6;}
+        .message-content p{margin-bottom:0.8em;}
+        .message-content pre{margin:0.8em 0;}
+        .message-content ol,.message-content ul{margin-left:1.5em;margin-bottom:0.5em;}
+        .message-content ol li{list-style-type:decimal;}
+        .message-content ul li{list-style-type:disc;}
+        .message-content li{margin-bottom:0.3em;}
+        .code-wrapper{position: relative;}
+        .code-copy-btn{position: absolute;top: 10px; right: 10px;background: rgba(30, 30, 30, 0.8);color: #ccc;border: none;border-radius: 4px;padding: 5px 10px;cursor: pointer;font-size: 0.8rem;opacity: 1;}
+        .my-3 {margin-top: 0.75rem; margin-bottom: 0.75rem;}
+        .math-display {margin: 1em 0;padding: 0.5em;background: rgba(0,0,0,0.1);border-radius: 4px;overflow-x: auto;}
+        .hover\:text-white:hover{color:#fff;}
+        .typing-indicator{display:flex;padding:10px 0;}
+        .typing-dot{width:8px;height:8px;background-color:#ececf1;border-radius:50%;margin:0 2px;animation:typing-animation 1.5s infinite;}
+        .typing-dot:nth-child(2){animation-delay:0.3s;}
+        .typing-dot:nth-child(3){animation-delay:0.6s;}
+        @keyframes typing-animation{0%{transform:translateY(0);}20%{transform:translateY(-5px);}40%{transform:translateY(0);}}
+        .fixed{position:fixed;}
+        .bottom-4{bottom:1rem;}
+        .right-4{right:1rem;}
+        .shadow-lg{box-shadow:0 10px 15px -3px rgba(0,0,0,0.1),0 4px 6px -2px rgba(0,0,0,0.05);}
+        .inset-0{top:0;bottom:0;left:0;right:0;}
+        .bg-black{background-color:#000;}
+        .bg-opacity-50{opacity:0.5;}
+        .z-50{z-index:50;}
+        .hidden{display:none;}
+        .max-h-\[90vh\]{max-height:90vh;}
+        .chat-container{scrollbar-width:thin;scrollbar-color:#888 transparent;}
+        .chat-container::-webkit-scrollbar{width:6px;}
+        .chat-container::-webkit-scrollbar-thumb{background-color:#888;border-radius:3px;}
+        .settings-panel{transition:all 0.3s ease;max-height:0;overflow:hidden;}
+        .settings-panel.open{max-height:500px;}
+        code{font-family:'Fira Code','Courier New',monospace;}
+        .hljs{border-radius:6px;padding:1.5em !important;}
+        @media (max-width:768px){
+            .sidebar{transform:translateX(-100%);transition:transform 0.3s ease;z-index:20;}
+            .sidebar.open{transform:translateX(0);}
+            .overlay{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.5);z-index:10;}
+            .sidebar.open + .overlay{display:block;}
+        }
+    </style>
+</head>
+<body class="bg-gray-900 h-screen flex overflow-hidden">
+    <aside class="sidebar w-64 bg-gray-900 border-r border-gray-700 flex flex-col absolute md:relative h-full">
+        <div class="p-4 border-b border-gray-700">
+            <button id="newChatBtn" class="flex items-center gap-3 p-3 rounded-md border border-gray-600 w-full hover:bg-gray-800 transition focus:outline-none">
+                <i class="fas fa-plus"></i>
+                <span>New chat</span>
+            </button>
+            <button id="settingsBtn" class="mt-3 flex items-center gap-3 p-3 rounded-md border border-gray-600 w-full hover:bg-gray-800 transition focus:outline-none">
+                <i class="fas fa-cog"></i>
+                <span>Settings</span>
+            </button>
+        </div>
+        <div id="settingsPanel" class="settings-panel border-b border-gray-700 px-4 pb-4">
+            <div class="mt-4 mb-2 text-gray-400 font-medium text-sm">CACHE</div>
+            <div class="flex items-center justify-between">
+                <label for="cacheToggle" class="cursor-pointer">Enable caching</label>
+                <label class="relative inline-flex items-center cursor-pointer">
+                    <input type="checkbox" id="cacheToggle" class="sr-only peer" checked>
+                    <div class="w-11 h-6 bg-gray-700 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-chatgpt-primary"></div>
+                </label>
+            </div>
+            <div class="mt-4 mb-2 text-gray-400 font-medium text-sm">ADVANCED FEATURES</div>
+            <div class="flex items-center justify-between mb-1">
+                <label for="latexToggle" class="cursor-pointer">LaTeX rendering</label>
+                <label class="relative inline-flex items-center cursor-pointer">
+                    <input type="checkbox" id="latexToggle" class="sr-only peer" checked>
+                    <div class="w-11 h-6 bg-gray-700 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-chatgpt-primary"></div>
+                </label>
+            </div>
+            <div class="flex items-center justify-between">
+                <label for="syntaxToggle" class="cursor-pointer">Syntax highlighting</label>
+                <label class="relative inline-flex items-center cursor-pointer">
+                    <input type="checkbox" id="syntaxToggle" class="sr-only peer" checked>
+                    <div class="w-11 h-6 bg-gray-700 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-chatgpt-primary"></div>
+                </label>
+            </div>
+            <button id="clearCacheBtn" class="mt-4 w-full bg-rose-700 hover:bg-rose-800 text-white font-medium py-2 px-4 rounded-lg transition flex items-center justify-center gap-2">
+                <i class="fas fa-trash"></i> Clear Cache
+            </button>
+        </div>
+        <div class="flex-1 overflow-y-auto p-2">
+            <div class="text-gray-400 text-xs px-4 py-2">Today</div>
+            <div class="sidebar-item flex items-center gap-3 px-4 py-3 rounded-md hover:bg-gray-800 transition cursor-pointer">
+                <i class="fas fa-comment"></i>
+                <span class="truncate">Explain quantum computing</span>
+            </div>
+            <div class="sidebar-item flex items-center gap-3 px-4 py-3 rounded-md hover:bg-gray-800 transition cursor-pointer">
+                <i class="fas fa-comment"></i>
+                <span class="truncate">Python vs JavaScript for web dev</span>
+            </div>
+            <div class="text-gray-400 text-xs px-4 py-2">Yesterday</div>
+            <div class="sidebar-item flex items-center gap-3 px-4 py-3 rounded-md hover:bg-gray-800 transition cursor-pointer">
+                <i class="fas fa-comment"></i>
+                <span class="truncate">Create a workout routine</span>
+            </div>
+            <div class="sidebar-item flex items-center gap-3 px-4 py-3 rounded-md hover:bg-gray-800 transition cursor-pointer">
+                <i class="fas fa-comment"></i>
+                <span class="truncate">What is Tailwind CSS?</span>
+            </div>
+            <div class="text-gray-400 text-xs px-4 py-2">Cached Responses</div>
+            <div class="sidebar-item flex items-center gap-3 px-4 py-3 rounded-md hover:bg-gray-800 transition cursor-pointer">
+                <i class="fas fa-database text-green-400"></i>
+                <span class="truncate">Array manipulation techniques</span>
+            </div>
+            <div class="sidebar-item flex items-center gap-3 px-4 py-3 rounded-md hover:bg-gray-800 transition cursor-pointer">
+                <i class="fas fa-database text-green-400"></i>
+                <span class="truncate">SQL optimization methods</span>
+            </div>
+        </div>
+        <div class="p-3 border-t border-gray-700">
+            <button class="flex items-center gap-3 p-3 rounded-md hover:bg-gray-800 transition w-full focus:outline-none">
+                <div class="bg-purple-600 rounded-full w-8 h-8 flex items-center justify-center">
+                    <i class="fas fa-user"></i>
+                </div>
+                <span>John Doe</span>
+            </button>
+        </div>
+    </aside>
+    <div class="overlay" onclick="toggleSidebar()"></div>
+    <main class="flex-1 flex flex-col h-full bg-gradient-to-b from-gray-800 to-gray-900">
+        <div class="md:hidden flex items-center justify-between p-4 border-b border-gray-700">
+            <button class="text-xl focus:outline-none" onclick="toggleSidebar()">
+                <i class="fas fa-bars"></i>
+            </button>
+            <h1 class="text-xl font-bold">ChatGPT</h1>
+            <button class="focus:outline-none">
+                <i class="fas fa-edit"></i>
+            </button>
+        </div>
+        <div class="p-4 hidden md:flex flex-col items-center">
+            <div class="flex items-center gap-4 mb-2">
+                <h1 class="text-3xl font-bold bg-gradient-to-r from-green-400 to-blue-500 bg-clip-text text-transparent">ChatGPT</h1>
+                <button id="themeToggle" class="p-2 rounded-full hover:bg-gray-700 transition">
+                    <i class="fas fa-moon dark:hidden"></i>
+                    <i class="fas fa-sun hidden dark:block"></i>
+                </button>
+            </div>
+            <div class="flex gap-2 mb-1">
+                <select id="modelSelect" class="bg-gray-700 text-sm rounded-lg px-3 py-1 focus:outline-none">
+                    <option value="openai" selected>OpenAI</option>
+                    <option value="mistral">Mistral</option>
+                    <option value="searchgpt">SearchGPT</option>
+                </select>
+                <button id="searchBtn" class="bg-gray-700 hover:bg-gray-600 text-sm rounded-lg px-3 py-1 transition">
+                    <i class="fas fa-search mr-2"></i> Search
+                </button>
+            </div>
+            <p class="text-gray-400 text-sm">Advanced AI with multi-model support</p>
+        </div>
+        <div id="chatContainer" class="chat-container flex-1 overflow-y-auto px-4 py-8 md:p-8">
+            <div class="max-w-2xl mx-auto">
+                <div class="message-container flex justify-center mb-4">
+                    <div class="bg-gray-800 rounded-2xl p-6 max-w-2xl text-center">
+                        <div class="text-2xl mb-4">👋 Hello! How can I help you today?</div>
+                        <p class="text-gray-400">Ask anything about coding, science, math, and more.</p>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-6">
+                            <div class="bg-gray-800 rounded-xl p-4 text-left">
+                                <div class="text-green-400 font-semibold">Advanced Features</div>
+                                <ul class="text-left mt-2 space-y-2">
+                                    <li class="text-gray-300"><i class="fas fa-square-root-alt mr-2"></i>LaTeX math rendering</li>
+                                    <li class="text-gray-300"><i class="fas fa-code mr-2"></i>Code block highlighting</li>
+                                    <li class="text-gray-300"><i class="fas fa-database mr-2"></i>Response caching</li>
+                                </ul>
+                            </div>
+                            <div class="bg-gray-800 rounded-xl p-4 text-left">
+                                <div class="text-green-400 font-semibold">Math Examples</div>
+                                <ul class="text-left mt-2 space-y-2">
+                                    <li class="text-gray-300">Quadratic formula: \(x = \frac{-b \\pm \\sqrt{b^2 - 4ac}}{2a}\)</li>
+                                    <div class="text-gray-300">Pythagorean theorem: \(a^2 + b^2 = c^2\)</div>
+                                    <li class="text-gray-300">Euler's identity: \(e^{i\\pi} + 1 = 0\)</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div id="messageArea"></div>
+            </div>
+        </div>
+        <div class="chat-container p-4 pb-16">
+            <div class="max-w-2xl mx-auto">
+                <div class="relative">
+                    <textarea id="messageInput" class="w-full bg-gray-800 rounded-xl p-4 pr-12 focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none" rows="Type a message..." oninput="resizeTextarea(this)"></textarea>
+                    <button class="submit absolute right-3 top-2 bg-green-500 hover:bg-green-600 rounded-lg w-8 h-8 flex items-center justify-center transition">
+                    <i class="fas fa-paper-plane"></i></button>
+                </div>
+                <p class="text-gray-500 text-sm text-center mt-4">
+                    <i class="fas fa-database text-green-400 mr-2"></i> Caching enabled
+                    <span class="mx-2">•</span>
+                    <i class="fas fa-square-root-alt text-blue-500 mr-2"></i> LaTeX rendering active
+                </p>
+            </div>
+        </div>
+    </main>
+    <script>
+        const messageInput = document.getElementById('messageInput');
+        const chatContainer = document.querySelector('#chatContainer');
+        const settingsPanel = document.querySelector('#settingsPanel');
+        const newChatBtn = document.querySelector('#newChatBtn');
+        const settingsBtn = document.querySelector('#settingsBtn');
+        const cacheToggle = document.querySelector('#cacheToggle');
+        const latexToggle = document.querySelector('#latexToggle');
+        const syntaxToggle = document.querySelector('#syntaxToggle');
+        const clearCacheBtn = document.querySelector('#clearCacheBtn');
+        const modelSelect = document.querySelector('#modelSelect');
+        const sendButton = document.querySelector('.send-btn');
+        const searchBtn = document.querySelector('#searchBtn');
+        const themeToggle = document.querySelector('#themeToggle');
+        
+        function toggleSidebar() {
+            const sidebar = document.querySelector('.sidebar');
+            sidebar.classList.toggle('open');
+            const overlay = document.querySelector('.overlay');
+            if (sidebar.classList.contains('open')) {
+                overlay.classList.remove('hidden');
+                document.body.style.overflow = 'hidden';
+            } else {
+                overlay.classList.add('hidden');
+                document.body.style.overflow = '';
+            }
+        }
+        
+        function resizeTextarea(element) {
+            element.style.height = 'auto';
+            element.style.height = element.scrollHeight + 'px';
+            if (!element.value) {
+                element.style.height = '48px';
+            }
+        }
+        
+        function cacheResponse(prompt, model, response) {
+            if (cacheToggle.checked) {
+                const cache = JSON.parse(localStorage.getItem('chatCache') || '{}');
+                cache[`${prompt}:${model}`] = response;
+                localStorage.setItem('chatCache', JSON.stringify(cache));
+            }
+        }
+        
+        function getCachedResponse(prompt, model) {
+            if (cacheToggle.checked) {
+                const cache = JSON.parse(localStorage.getItem('chatCache') || '{}');
+                return cache[`${prompt}:${model}`];
+            }
+            return null;
+        }
+        
+        function initCodeCopy() {
+            document.querySelectorAll('.code-copy-btn').forEach(button => {
+                button.addEventListener('click', function() {
+                    const codeBlock = this.parentNode.querySelector('code');
+                    navigator.clipboard.writeText(codeBlock.textContent).then(() => {
+                        const originalText = this.innerHTML;
+                        this.innerHTML = '<i class="fas fa-check mr-2"></i> Copied!';
+                        setTimeout(() => this.innerHTML = originalText, 2000);
+                    }).catch(err => console.error('Copy failed:', err));
+                });
+            });
+        }
+        
+        function applySyntaxHighlighting() {
+            if (syntaxToggle.checked && typeof hljs !== 'undefined') {
+                document.querySelectorAll('pre code').forEach(block => hljs.highlightElement(block));
+                initCodeCopy();
+            } else if (syntaxToggle.checked) {
+                console.warn('Highlight.js not loaded.');
+                initCodeCopy();
+            }
+        }
+        
+        function renderMath() {
+            if (latexToggle.checked && typeof MathJax !== 'undefined') {
+                MathJax.typesetPromise().catch(err => console.error('MathJax error:', err));
+            } else if (latexToggle.checked) {
+                console.warn('MathJax not loaded.');
+            }
+        }
+        
+        function appendMessage(sender, content, isUser = false) {
+            const messageContainer = document.createElement('div');
+            messageContainer.className = 'message-container';
+            const messageDiv = document.createElement('div');
+            messageDiv.className = isUser ? 'user-message-gradient rounded-md p-4 mb-4' : 'ai-message-gradient rounded-md p-4 mb-4';
+            const innerDiv = document.createElement('div');
+            innerDiv.className = 'flex gap-3';
+            const avatarDiv = document.createElement('div');
+            avatarDiv.className = isUser
+                ? 'bg-purple-600 rounded-full w-8 h-8 flex items-center justify-center flex-shrink-0'
+                : 'bg-gradient-to-br from-green-600 to-blue-500 rounded-full w-8 h-8 flex items-center justify-center flex-shrink-0';
+            avatarDiv.innerHTML = isUser ? '<i class="fas fa-user"></i>' : '<i class="fas fa-robot"></i>';
+            const contentDiv = document.createElement('div');
+            contentDiv.innerHTML = `<div class="font-semibold">${sender}</div><div class="mt-2 message-content">${content}</div>`;
+            if (!isUser) {
+                const actionsDiv = document.createElement('div');
+                actionsDiv.className = 'flex gap-3 mt-4 text-gray-400';
+                const messageId = Date.now();
+                actionsDiv.innerHTML = `
+                    <button class="hover:text-white focus:outline-none" title="Like"><i class="fas fa-thumbs-up"></i></button>
+                    <button class="hover:text-white focus:outline-none" title="Dislike"><i class="fas fa-thumbs-down"></i></button>
+                    <button class="hover:text-white focus:outline-none copy-btn" title="Copy"><i class="fas fa-copy"></i></button>
+                    <button class="hover:text-white focus:outline-none edit-btn" title="Edit" data-message-id="${messageId}"><i class="fas fa-pencil-alt"></i></button>
+                    <button class="hover:text-white focus:outline-none delete-btn" title="Delete" data-message-id="${messageId}"><i class="fas fa-trash"></i></button>
+                `;
+                contentDiv.appendChild(actionsDiv);
+            }
+            innerDiv.appendChild(avatarDiv);
+            innerDiv.appendChild(contentDiv);
+            messageDiv.appendChild(innerDiv);
+            messageContainer.appendChild(messageDiv);
+            document.getElementById('messageArea').appendChild(messageContainer);
+            applySyntaxHighlighting();
+            renderMath();
+            chatContainer.scrollTop = chatContainer.scrollHeight;
+        }
+        
+        function showTypingIndicator() {
+            const hidden = document.createElement('div');
+            hidden.className = 'typing-indicator mb-4';
+            hidden.innerHTML = `
+                <div class="flex gap-3">
+                    <div class="bg-gradient-to-br from-green-600 to-blue-500 rounded-full w-8 h-8 flex items-center justify-center flex-shrink-0">
+                        <i class="fas fa-robot"></i>
+                    </div>
+                    <div class="flex items-center ml-2">
+                        <div class="typing-dot"></div>
+                        <div class="typing-dot"></div>
+                        <div class="typing-dot"></div>
+                    </div>
+                </div>
+            `;
+            document.getElementById('messageArea').appendChild(hidden);
+            chatContainer.scrollTop = chatContainer.scrollHeight;
+            return hidden;
+        }
+        
+        function removeTypingIndicator() {
+            const hidden = document.querySelector('.typing-indicator');
+            if (hidden) hidden.remove();
+        }
+        
+        function showNotification(message, isError = false) {
+            const notification = document.createElement('div');
+            notification.className = `fixed bottom-4 right-4 ${isError ? 'bg-red-600' : 'bg-green-600'} text-white px-4 py-2 rounded-xl shadow-lg flex items-center gap-2`;
+            notification.innerHTML = `<i class="fas ${isError ? 'fa-exclamation-circle' : 'fa-check-circle'}"></i> ${message}`;
+            document.body.appendChild(notification);
+            setTimeout(() => notification.remove(), 3000);
+        }
+        
+        sendButton.addEventListener('click', async () => {
+            const userMessage = messageInput.value.trim();
+            if (!userMessage) return;
+            appendMessage('You', userMessage, true);
+            messageInput.value = '';
+            resizeTextarea(messageInput);
+            const selectedModel = modelSelect.value;
+            const cachedResponse = getCachedResponse(userMessage, selectedModel);
+            if (cachedResponse) {
+                appendMessage('ChatGPT', cachedResponse);
+                showNotification('Loaded from cache');
+                return;
+            }
+            const typingIndicator = showTypingIndicator();
+            try {
+                const url = `https://text.pollinations.ai/${encodeURIComponent(userMessage)}?model=${selectedModel}&system=You are a helpful AI assistant.&json=true`;
+                const response = await fetch(url, {
+                    method: 'GET',
+                    headers: { 'Content-Type': 'application/json' },
+                });
+                if (!response.ok) {
+                    throw new Error(`HTTP error! Status: ${response.status}`);
+                }
+                const data = await response.json();
+                const aiResponse = data.output || 'No response received.';
+                removeTypingIndicator();
+                cacheResponse(userMessage, selectedModel, aiResponse);
+                appendMessage('ChatGPT', aiResponse);
+            } catch (error) {
+                console.error('API Error:', error);
+                removeTypingIndicator();
+                const errorMessage = error.message.includes('429') 
+                    ? 'Rate limit exceeded. Please wait a few seconds.'
+                    : 'Failed to fetch response. Try again.';
+                appendMessage('ChatGPT', errorMessage);
+                showNotification(errorMessage, true);
+            }
+        });
+        
+        messageInput.addEventListener('keydown', e => {
+            if (e.key === 'Enter' && !e.shiftKey) {
+                e.preventDefault();
+                sendButton.click();
+            }
+        });
+        
+        clearCacheBtn.addEventListener('click', () => {
+            if (confirm('Clear all cached responses? This cannot be undone.')) {
+                localStorage.removeItem('chatCache');
+                showNotification('Cache cleared');
+            }
+        });
+        
+        themeToggle.addEventListener('click', () => {
+            document.documentElement.classList.toggle('dark');
+            localStorage.setItem('darkMode', document.documentElement.classList.contains('dark'));
+        });
+        
+        if (localStorage.getItem('darkMode') === 'true') {
+            document.documentElement.classList.add('dark');
+        }
+        
+        document.addEventListener('click', e => {
+            if (e.target.closest('.edit-btn')) {
+                const messageText = e.target.closest('.ai-message-gradient').querySelector('.message-content').textContent;
+                messageInput.value = messageText;
+                messageInput.focus();
+            } else if (e.target.closest('.delete-btn')) {
+                if (confirm('Delete this message?')) {
+                    e.target.closest('.message-container').remove();
+                }
+            } else if (e.target.closest('.copy-btn')) {
+                const messageText = e.target.closest('.ai-message-gradient').querySelector('.message-content').textContent;
+                navigator.clipboard.writeText(messageText).then(() => {
+                    showNotification('Message copied');
+                }).catch(err => console.error('Copy failed:', err));
+            }
+        });
+        
+        settingsBtn.addEventListener('click', () => {
+            settingsPanel.classList.toggle('open');
+        });
+        
+        const searchModal = document.createElement('div');
+        searchModal.id = 'searchModal';
+        searchModal.className = 'fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden';
+        searchModal.innerHTML = `
+            <div class="bg-gray-800 rounded-xl w-full max-w-lg max-h-[90vh] flex flex-col">
+                <div class="p-4 border-b border-gray-700 flex items-center">
+                    <input type="text" id="searchInput" placeholder="Search conversations..." 
+                        class="bg-gray-700 w-full px-4 py-2 rounded-lg focus:outline-none">
+                    <button id="closeSearchModal" class="ml-2 p-2 rounded-full hover:bg-gray-700">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                <div class="overflow-y-auto p-2 search-results">
+                    <div class="p-2 text-gray-400 text-sm">Recent searches</div>
+                    <div class="px-4 py-3 rounded-md hover:bg-gray-700 cursor-pointer">
+                        <div class="font-semibold">Learn React</div>
+                        <div class="text-xs text-gray-400 mt-1">2 days ago - OpenAI</div>
+                    </div>
+                    <div class="px-4 py-3 rounded-md hover:bg-gray-700 cursor-pointer">
+                        <div class="font-semibold">Center div</div>
+                        <div class="text-xs text-gray-400 mt-1">1 week ago - Mistral</div>
+                    </div>
+                </div>
+            </div>
+        `;
+        document.body.appendChild(searchModal);
+        
+        searchBtn.addEventListener('click', () => {
+            searchModal.classList.remove('hidden');
+            document.getElementById('searchInput').focus();
+        });
+        
+        document.getElementById('closeSearchModal').addEventListener('click', () => {
+            searchModal.classList.add('hidden');
+        });
+        
+        searchModal.addEventListener('click', e => {
+            if (e.target === searchModal) {
+                searchModal.classList.add('hidden');
+            }
+        });
+        
+        newChatBtn.addEventListener('click', () => {
+            document.getElementById('messageArea').innerHTML = '';
+            messageInput.value = '';
+            resizeTextarea(messageInput);
+        });
+        
+        document.addEventListener('DOMContentLoaded', () => {
+            if (typeof hljs === 'undefined') console.error('Highlight.js failed to load.');
+            if (typeof MathJax === 'undefined') console.error('MathJax failed to load.');
+            resizeTextarea(messageInput);
+            applySyntaxHighlighting();
+            renderMath();
+        });
+        
+        window.addEventListener('resize', () => {
+            if (window.innerWidth >= 768) {
+                document.querySelector('.sidebar').classList.remove('open');
+                document.querySelector('.overlay').classList.add('hidden');
+                document.body.style.overflow = '';
+            }
+        });
+    </script>
+</body>
+</html>
